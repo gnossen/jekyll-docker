@@ -7,7 +7,8 @@ RUN apk --no-cache add ruby \
                        ruby-bundler \
                        ruby-dev \
                        libffi \
-                       libffi-dev ruby-rdoc \
+                       libffi-dev \
+                       ruby-rdoc \
                        ruby-irb \
                        g++ \
                        make \
@@ -21,7 +22,17 @@ ADD nginx.conf ${JEKYLL_DIR}/nginx.conf
 ADD blog ${BLOG_DIR}
 RUN cd ${BLOG_DIR} && \
         bundle install && \
-        jekyll build
+        bundle exec jekyll build
+
+RUN apk del ruby \
+            ruby-bundler \
+            ruby-dev \
+            libffi \
+            libffi-dev \
+            ruby-rdoc \
+            ruby-irb \
+            g++ \
+            make
 
 EXPOSE 80
 
